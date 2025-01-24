@@ -1,0 +1,56 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
+import warnings
+warnings.filterwarnings('ignore')
+%matplotlib inline
+
+# Load the dataset
+file_path = 'amazon.csv.zip'
+df = pd.read_csv(file_path)
+
+# Display the first few rows of the dataset
+df.head()
+
+# Remove currency symbols and convert price columns to numeric
+df['discounted_price'] = df['discounted_price'].str.replace('₹', '').str.replace(',', '').astype(float)
+df['actual_price'] = df['actual_price'].str.replace('₹', '').str.replace(',', '').astype(float)
+df['discount_percentage'] = df['discount_percentage'].str.replace('%', '').astype(float)
+
+# Convert rating to numeric, handling errors
+df['rating'] = pd.to_numeric(df['rating'], errors='coerce')
+
+# Fill missing values in 'rating' with the mean rating
+df['rating'].fillna(df['rating'].mean(), inplace=True)
+
+# Encode categorical variables
+label_encoder = LabelEncoder()
+df['category'] = label_encoder.fit_transform(df['category'])
+
+# Display the cleaned data
+df.head()
+
+# Correlation heatmap
+numeric_df = df.select_dtypes(include=[np.number])
+plt.figure(figsize=(10, 10))
+sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
+# Distribution of ratings
+sns.histplot(df['rating'], bins=18, kde=True)
+plt.title('Distribution of Ratings')
+plt.xlabel('Rating')
+plt.ylabel('Frequency')
+plt.show()
+
+# Box plot of discounted prices by category
+plt.figure(figsize=(12, 6))
+sns.boxplot(x='category', y='discounted_price', data=df)
+plt.title('Box Plot of Discounted Prices by Category')
+plt.xlabel('Category')
+plt.ylabel('Discounted Price')
+plt.xticks(rotation=90)
+plt.show()
