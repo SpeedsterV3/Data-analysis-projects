@@ -1,5 +1,8 @@
 Amazon Sales Dataset
 This dataset is having the data of 1K+ Amazon Product's Ratings and Reviews
+In this project, various data cleaning, machine learning preprocessing, and data visualization techniques were applied to a dataset of Amazon products. The objective was to clean, preprocess, and visualize the data to gain insights into product ratings, pricing, and categories. Here's a breakdown of the tools and techniques used:
+
+
 
 About Dataset
 This dataset is having the data of 1K+ Amazon Product's Ratings and Reviews as per their details listed on the official website of Amazon
